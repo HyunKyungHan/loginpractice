@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Registeration</h1>
+    <form id="reg-form">
+        <input type="text" id="username" autocomplete="off" placeholder="Username" />
+        <input type="password" id="password" autocomplete="off" placeholder="Password" />
+        <input type="submit" value="Submit Form" />
+    </form>
+
+    <script>
+        const form = document.getElementById('reg-form')
+        form.addEventListener('submit', registerUser)
+
+        //프론트에서 js 서버로 데이터를 보내는 방법
+        //1.JSON으로 보내기(node에서 가장 흔한 방법)
+        //2.urlencoded로 보내기(default, php에서 흔한 방법)
+        async function registerUser(event) {
+            event.preventDefault() //페이지를 refresh하는 form의 default특성을 막음.
+            const username = document.getElementById('username').value //html의 username필드를 가져와 변수 username에 대입.
+            const password = document.getElementById('password').value
+
+
+            const result = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            }).then((res) => res.json())
+
+            console.log(result)
+        }
+    </script>
+</body>
+
+</html>
